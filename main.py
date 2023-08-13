@@ -1,4 +1,3 @@
-import customtkinter as ctk
 from main_application import MainApplication
 
 
