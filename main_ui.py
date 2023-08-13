@@ -29,6 +29,7 @@ class LoginPage(ctk.CTkFrame):
         self.login_frame = ctk.CTkFrame(self.login_container)
         self.login_frame.pack(padx=50, pady=50, expand=True)
         self.login_frame.anchor(ctk.CENTER)
+        
 
         self.login_label = ctk.CTkLabel(
             self.login_frame, text="Login or Register", font=("Arial", 30)

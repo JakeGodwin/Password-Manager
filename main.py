@@ -1,10 +1,5 @@
 from main_application import MainApplication
 
-
-def run():  # function to run the application
-    if __name__ == "__main__":  # Entry point for running the application
-        app = MainApplication()
-        app.mainloop()
-
-
-run()
+app = MainApplication()
+if __name__ == "__main__":
+    app.run()

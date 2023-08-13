@@ -31,3 +31,7 @@ class MainApplication(
     def show_frame(self, page_class):  # function to raise chosen frame to the top
         frame = self.frames[page_class]
         frame.tkraise()
+
+    def run(self):  # function to run the application
+    # if __name__ == "__main__":  # Entry point for running the application
+        self.mainloop()
