@@ -1,7 +1,6 @@
 import customtkinter as ctk
-from main_page import MainPage
-from login_page import LoginPage
-from register_page import RegisterPage
+from main_ui import MainPage, LoginPage, RegisterPage
+
 
 
 class MainApplication(
