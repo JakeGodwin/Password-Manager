@@ -12,7 +12,9 @@ class MainApplication(ctk.CTk):
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
-        self.frames = {}
+        self.frames = {LoginPage: LoginPage(container, self),
+            RegisterPage: RegisterPage(container, self),
+            MainPage: MainPage(container, self)}
 
         for F in (LoginPage, RegisterPage, MainPage):
             frame = F(container, self)

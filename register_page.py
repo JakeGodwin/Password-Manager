@@ -1,6 +1,7 @@
 import customtkinter as ctk
 
-class RegisterPage(ctk.Frame):
+
+class RegisterPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
@@ -9,7 +10,7 @@ class RegisterPage(ctk.Frame):
 
     def create_widgets(self):
         self.register_container = ctk.CTkFrame(self)
-        self.register_container.pack(fill=ctk.BOTH, expand=True)
+        self.register_container.pack(fill="both", expand=True)
         self.register_container.anchor(ctk.CENTER)
 
         self.register_page_frame = ctk.CTkFrame(self.register_container)
