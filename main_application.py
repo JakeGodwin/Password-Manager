@@ -9,7 +9,8 @@ class MainApplication(
 ):  # main application class is the main application controller
     def __init__(self, *args, **kwargs):
         ctk.CTk.__init__(self, *args, **kwargs)
-
+        self.geometry("1000x600")
+        self.title("Password Manager")
         # container to hold different frames
         container = ctk.CTkFrame(self)
         container.pack(side="top", fill="both", expand=True)
