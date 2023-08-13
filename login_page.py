@@ -1,4 +1,7 @@
 import customtkinter as ctk
+import main_page as MainPage
+import main_application as MainApplication
+import register_page as RegisterPage
 
 class LoginPage(ctk.Frame):
     def __init__(self, parent, controller):
