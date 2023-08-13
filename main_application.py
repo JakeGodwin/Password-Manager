@@ -2,7 +2,6 @@ import customtkinter as ctk
 from main_ui import MainPage, LoginPage, RegisterPage
 
 
-
 class MainApplication(
     ctk.CTk
 ):  # main application class is the main application controller

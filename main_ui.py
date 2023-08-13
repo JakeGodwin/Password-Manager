@@ -13,6 +13,7 @@ class MainPage(ctk.CTkFrame):
         self.label.configure(text="Hello World!")
         self.label.pack(fill="both", expand=True)
 
+
 class LoginPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
@@ -29,13 +30,27 @@ class LoginPage(ctk.CTkFrame):
         self.login_frame.pack(padx=50, pady=50, expand=True)
         self.login_frame.anchor(ctk.CENTER)
 
-        self.login_label = ctk.CTkLabel(self.login_frame, text="Login or Register", font=("Arial", 30))
+        self.login_label = ctk.CTkLabel(
+            self.login_frame, text="Login or Register", font=("Arial", 30)
+        )
         self.login_label.pack(padx=50, pady=20, expand=True)
 
-        self.enter_login_username = ctk.CTkEntry(self.login_frame, placeholder_text="username", placeholder_text_color="grey", width=250, height=30)
+        self.enter_login_username = ctk.CTkEntry(
+            self.login_frame,
+            placeholder_text="username",
+            placeholder_text_color="grey",
+            width=250,
+            height=30,
+        )
         self.enter_login_username.pack(padx=50, pady=10, expand=True)
 
-        self.enter_login_password = ctk.CTkEntry(self.login_frame, placeholder_text="password", placeholder_text_color="grey", width=250, height=30)
+        self.enter_login_password = ctk.CTkEntry(
+            self.login_frame,
+            placeholder_text="password",
+            placeholder_text_color="grey",
+            width=250,
+            height=30,
+        )
         self.enter_login_password.pack(padx=50, pady=10, expand=True)
 
         self.login_button = ctk.CTkButton(
@@ -45,11 +60,18 @@ class LoginPage(ctk.CTkFrame):
         )
         self.login_button.pack(padx=50, pady=10, expand=True)
 
-        self.register_button = ctk.CTkButton(self.login_frame, text="Register", command=lambda: self.controller.show_frame(RegisterPage))
+        self.register_button = ctk.CTkButton(
+            self.login_frame,
+            text="Register",
+            command=lambda: self.controller.show_frame(RegisterPage),
+        )
         self.register_button.pack(padx=50, pady=10, expand=True)
 
-        self.login_text_label = ctk.CTkLabel(self.login_frame, text="Login or create an account!", font=("Arial", 18))
+        self.login_text_label = ctk.CTkLabel(
+            self.login_frame, text="Login or create an account!", font=("Arial", 18)
+        )
         self.login_text_label.pack(padx=50, pady=10, expand=True)
+
 
 class RegisterPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
@@ -72,17 +94,39 @@ class RegisterPage(ctk.CTkFrame):
         )
         self.register_label.pack(padx=50, pady=50, expand=True)
 
-        self.enter_register_username = ctk.CTkEntry(self.register_page_frame, placeholder_text="username", placeholder_text_color="grey", width=250, height=30)
+        self.enter_register_username = ctk.CTkEntry(
+            self.register_page_frame,
+            placeholder_text="username",
+            placeholder_text_color="grey",
+            width=250,
+            height=30,
+        )
         self.enter_register_username.pack(padx=50, pady=10, expand=True)
 
-        self.enter_register_password = ctk.CTkEntry(self.register_page_frame, placeholder_text="password", placeholder_text_color="grey", width=250, height=30)
+        self.enter_register_password = ctk.CTkEntry(
+            self.register_page_frame,
+            placeholder_text="password",
+            placeholder_text_color="grey",
+            width=250,
+            height=30,
+        )
         self.enter_register_password.pack(padx=50, pady=10, expand=True)
 
-        self.register_button = ctk.CTkButton(self.register_page_frame, text="Complete", command=lambda: self.controller.show_frame(MainPage)) 
+        self.register_button = ctk.CTkButton(
+            self.register_page_frame,
+            text="Complete",
+            command=lambda: self.controller.show_frame(MainPage),
+        )
         self.register_button.pack(padx=50, pady=10, expand=True)
 
-        self.go_back_button = ctk.CTkButton(self.register_page_frame, text="Back", command=lambda: self.controller.show_frame(LoginPage)) 
+        self.go_back_button = ctk.CTkButton(
+            self.register_page_frame,
+            text="Back",
+            command=lambda: self.controller.show_frame(LoginPage),
+        )
         self.go_back_button.pack(padx=50, pady=10, expand=True)
 
-        self.register_text_label = ctk.CTkLabel(self.register_page_frame, text="Create a new account!", font=("Arial", 18))
-        self.register_text_label.pack(padx=50, pady=10, expand=True)        
+        self.register_text_label = ctk.CTkLabel(
+            self.register_page_frame, text="Create a new account!", font=("Arial", 18)
+        )
+        self.register_text_label.pack(padx=50, pady=10, expand=True)
