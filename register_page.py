@@ -16,7 +16,9 @@ class RegisterPage(ctk.CTkFrame):
         self.register_page_frame = ctk.CTkFrame(self.register_container)
         self.register_page_frame.pack()
 
-        self.register_label = ctk.CTkLabel(self.register_page_frame, text="Register Your account")
+        self.register_label = ctk.CTkLabel(
+            self.register_page_frame, text="Register Your account"
+        )
         self.register_label.pack()
 
         self.enter_register_username = ctk.CTkEntry(self.register_page_frame)

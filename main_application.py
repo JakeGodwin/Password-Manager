@@ -3,26 +3,32 @@ from main_page import MainPage
 from login_page import LoginPage
 from register_page import RegisterPage
 
-class MainApplication(ctk.CTk):
+
+class MainApplication(
+    ctk.CTk
+):  # main application class is the main application controller
     def __init__(self, *args, **kwargs):
         ctk.CTk.__init__(self, *args, **kwargs)
 
+        # container to hold different frames
         container = ctk.CTkFrame(self)
         container.pack(side="top", fill="both", expand=True)
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
-        self.frames = {LoginPage: LoginPage(container, self),
-            RegisterPage: RegisterPage(container, self),
-            MainPage: MainPage(container, self)}
+        self.frames = {}  # Dictionary to store frames
 
-        for F in (LoginPage, RegisterPage, MainPage):
+        for F in (
+            LoginPage,
+            RegisterPage,
+            MainPage,
+        ):  # loops through page classes and creates frame objects
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
 
-        self.show_frame(LoginPage)
-    
-    def show_frame(self, page_class):
+        self.show_frame(LoginPage)  # shows inital login page
+
+    def show_frame(self, page_class):  # function to raise chosen frame to the top
         frame = self.frames[page_class]
         frame.tkraise()
