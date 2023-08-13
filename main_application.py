@@ -1,7 +1,7 @@
 import customtkinter as ctk
-import main_page
-import login_page
-import register_page
+from main_page import MainPage
+from login_page import LoginPage
+from register_page import RegisterPage
 
 class MainApplication(ctk.CTk):
     def __init__(self, *args, **kwargs):
