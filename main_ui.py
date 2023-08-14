@@ -1,7 +1,7 @@
 import customtkinter as ctk
 import tkinter as tk
 import sqlite3
-from user_database import UserDatabase
+from user_database import UserDatabase as user_db
 
 def switch_to_main_page(controller):
     controller.show_frame(MainPage)
@@ -88,7 +88,7 @@ class LoginPage(ctk.CTkFrame):
         self.conn = sqlite3.connect("database.db")
         self.cursor = self.conn.cursor()
         if username != "" and password!= "":
-            self.cursor.execute('SELECT password FROM users WHERE username =?', (username,))
+            self.cursor.execute('SELECT password_hash FROM users WHERE username =?', [username])
             result = self.cursor.fetchone()
             if result == password:
                 tk.messagebox.showinfo('Success', 'Login Successful!')
@@ -162,11 +162,11 @@ class RegisterPage(ctk.CTkFrame):
         username = self.enter_register_username.get()
         password = self.enter_register_password.get()
         if username != "" and password!= "":
-            self.cursor.execute('SELECT username FROM users WHERE username =?', (username))
+            self.cursor.execute('SELECT username FROM users WHERE username =?', [username])
             if self.cursor.fetchone() is not None:
                 tk.messagebox.showerror("Error", "Username already exists!")
             else:
-                self.add_user(username, password)
+                user_db.add_user(self, username, password)
                 tk.messagebox.showinfo("account created", "Account created successfully!")
                 self.controller.show_frame(MainPage)
         else:
