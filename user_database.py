@@ -34,3 +34,9 @@ class UserDatabase:
             SELECT * FROM users WHERE username =?
         ''', (username,))
         return self.cursor.fetchone()
+    
+    def get_user_pass(self, username):
+        self.cursor.execute('''
+            SELECT password_hash FROM users WHERE username =?
+        ''', (username,))
+        return self.cursor.fetchone()

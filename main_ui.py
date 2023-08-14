@@ -88,9 +88,10 @@ class LoginPage(ctk.CTkFrame):
         self.conn = sqlite3.connect("database.db")
         self.cursor = self.conn.cursor()
         if username != "" and password!= "":
-            self.cursor.execute('SELECT password_hash FROM users WHERE username =?', [username])
-            result = self.cursor.fetchone()
-            if result == password:
+           # self.cursor.execute('SELECT password_hash FROM users WHERE username =?', [username])
+           # result = self.cursor.fetchone()
+          #  if result == password:
+            if user_db.get_user_pass(self, username) == password:          
                 tk.messagebox.showinfo('Success', 'Login Successful!')
                 self.controller.show_frame(MainPage)
             else:
