@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from main_ui import MainPage, LoginPage, RegisterPage
 from user_database import UserDatabase
+from accounts_database import AccountsDatabase
 
 
 class MainApplication(
@@ -11,6 +12,7 @@ class MainApplication(
         self.geometry("1000x600")
         self.title("Password Manager")
         self.user_database = UserDatabase("database.db")
+      #  self.accounts_database = AccountsDatabase("accounts.db")
         # container to hold different frames
         container = ctk.CTkFrame(self)
         container.pack(side="top", fill="both", expand=True)
