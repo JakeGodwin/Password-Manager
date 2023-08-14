@@ -4,26 +4,79 @@ import sqlite3
 from user_database import UserDatabase as user_db
 import bcrypt
 
-def switch_to_main_page(controller):
-    controller.show_frame(MainPage)
-
-def switch_to_login_page(controller):
-    controller.show_frame(LoginPage)
-
-def switch_to_register_page(controller):
-    controller.show_frame(RegisterPage)
 
 class MainPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
-
+        self.main_page_container = ctk.CTkFrame(self)
+        self.main_page_container.pack(fill="both", expand=True)
+        self.main_page_container.anchor(ctk.CENTER)
         self.create_widgets()
 
     def create_widgets(self):
-        self.label = ctk.CTkLabel(self)
-        self.label.configure(text="Hello World!")
-        self.label.pack(fill="both", expand=True)
+        self.left_side_frame = ctk.CTkFrame(self.main_page_container, fg_color="#2d2d2d")
+        self.left_side_frame.pack(fill="both", expand=True, side="left") 
+        self.left_side_frame.anchor(ctk.CENTER)    
+        
+        self.label_frame = ctk.CTkFrame(self.left_side_frame, fg_color="#2d2d2d")
+        self.label_frame.grid(row=0, column=0)
+
+        self.pass_label = ctk.CTkLabel(self.label_frame, text="View Passwords", bg_color="#2d2d2d")
+        self.pass_label.grid(row=0, column=0, padx=20,pady=20)
+        self.pass_label.anchor(ctk.CENTER)
+
+        self.listbox_output_container = ctk.CTkFrame(self.left_side_frame, fg_color="#2d2d2d")
+        self.listbox_output_container.grid(row=1, column=0)
+        self.listbox_output_container.anchor(ctk.CENTER)
+
+        self.list_box_frame = ctk.CTkFrame(self.listbox_output_container, fg_color="#2d2d2d")
+        self.list_box_frame.grid(row=0, column=0)
+        self.list_box_frame.anchor(ctk.CENTER)
+
+        self.list_box = tk.Listbox(self.list_box_frame, width=30, height=20, bg="#32393d", borderwidth=0)
+        self.list_box.grid(row=0, column=0, padx=20, pady=20)
+
+        self.output_frame = ctk.CTkFrame(self.listbox_output_container, fg_color="#2d2d2d")
+        self.output_frame.grid(row=0, column=1)
+
+        self.output_box = ctk.CTkTextbox(self.output_frame,width=300, height=100, fg_color="#32393d")
+        self.output_box.grid(row=0, column=0, padx=20, pady=20)
+
+        self.coppy_button = ctk.CTkButton(self.output_frame, text="Copy Password")
+        self.coppy_button.grid(row=1, column=0, padx=20, pady=20)
+
+        self.left_side_button_frame = ctk.CTkFrame(self.left_side_frame, fg_color="#2d2d2d")
+        self.left_side_button_frame.grid(row=2, column=0)
+
+        self.edit_button = ctk.CTkButton(self.left_side_button_frame, text="edit")
+        self.edit_button.grid(row=0, column=0, padx=20, pady=20)
+
+        self.delete_button = ctk.CTkButton(self.left_side_button_frame, text="delete")
+        self.delete_button.grid(row=0, column=1, padx=20, pady=20)
+
+        self.right_side_frame = ctk.CTkFrame(self.main_page_container)
+        self.right_side_frame.pack(fill="both", expand=True, side="right")
+        self.right_side_frame.anchor(ctk.CENTER)
+
+        self.right_side_label = ctk.CTkLabel(self.right_side_frame, text="Add New Password")
+        self.right_side_label.grid(row=0, column=0, padx=20, pady=30)
+
+        self.account_entry = ctk.CTkEntry(self.right_side_frame)
+        self.account_entry.grid(row=1, column=0, padx=20, pady=10)
+
+        self.password_entry = ctk.CTkEntry(self.right_side_frame)
+        self.password_entry.grid(row=2, column=0, padx=20, pady=10)
+
+        self.add_new_button = ctk.CTkButton(self.right_side_frame, text="Add")
+        self.add_new_button.grid(row=3, column=0, padx=20, pady=20)
+
+        self.sign_out_button = ctk.CTkButton(self.right_side_frame, text="Sign Out")
+        self.sign_out_button.grid(row=4, column=0, padx=20, pady=40)
+
+
+
+    
 
 class LoginPage(ctk.CTkFrame):
     def __init__(self, parent, controller):

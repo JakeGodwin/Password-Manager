@@ -1,6 +1,5 @@
 import sqlite3
-import hashlib
-import bcrypt
+
 
 class UserDatabase:
     def __init__(self, db_name):
