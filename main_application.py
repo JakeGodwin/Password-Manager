@@ -1,6 +1,6 @@
 import customtkinter as ctk
 from main_ui import MainPage, LoginPage, RegisterPage
-
+from user_database import UserDatabase
 
 class MainApplication(
     ctk.CTk
@@ -9,6 +9,7 @@ class MainApplication(
         ctk.CTk.__init__(self, *args, **kwargs)
         self.geometry("1000x600")
         self.title("Password Manager")
+        self.user_database = UserDatabase("database.db")
         # container to hold different frames
         container = ctk.CTkFrame(self)
         container.pack(side="top", fill="both", expand=True)
@@ -33,5 +34,4 @@ class MainApplication(
         frame.tkraise()
 
     def run(self):  # function to run the application
-    # if __name__ == "__main__":  # Entry point for running the application
         self.mainloop()
