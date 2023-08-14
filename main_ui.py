@@ -13,6 +13,9 @@ class MainPage(ctk.CTkFrame):
         self.label.configure(text="Hello World!")
         self.label.pack(fill="both", expand=True)
 
+    def switch_to_login_page(controller):
+        controller.show_frame(LoginPage)
+
 
 class LoginPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
@@ -72,6 +75,12 @@ class LoginPage(ctk.CTkFrame):
         )
         self.login_text_label.pack(padx=50, pady=10, expand=True)
 
+    def switch_to_main_page(controller):
+        controller.show_frame(MainPage)
+    
+    def switch_to_register_page(controller):
+        controller.show_frame(RegisterPage)
+
 
 class RegisterPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
@@ -114,7 +123,7 @@ class RegisterPage(ctk.CTkFrame):
 
         self.register_button = ctk.CTkButton(
             self.register_page_frame,
-            text="Complete",
+            text="Sign Up",
             command=lambda: self.controller.show_frame(MainPage),
         )
         self.register_button.pack(padx=50, pady=10, expand=True)
@@ -130,3 +139,9 @@ class RegisterPage(ctk.CTkFrame):
             self.register_page_frame, text="Create a new account!", font=("Arial", 18)
         )
         self.register_text_label.pack(padx=50, pady=10, expand=True)
+
+    def switch_to_main_page(controller):
+        controller.show_frame(MainPage)
+
+    def switch_to_login_page(controller):
+        controller.show_frame(LoginPage)
