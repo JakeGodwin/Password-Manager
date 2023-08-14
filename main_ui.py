@@ -3,6 +3,15 @@ import tkinter as tk
 import sqlite3
 from user_database import UserDatabase
 
+def switch_to_main_page(controller):
+    controller.show_frame(MainPage)
+
+def switch_to_login_page(controller):
+    controller.show_frame(LoginPage)
+
+def switch_to_register_page(controller):
+    controller.show_frame(RegisterPage)
+
 class MainPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
@@ -14,10 +23,6 @@ class MainPage(ctk.CTkFrame):
         self.label = ctk.CTkLabel(self)
         self.label.configure(text="Hello World!")
         self.label.pack(fill="both", expand=True)
-
-    def switch_to_login_page(controller):
-        controller.show_frame(LoginPage)
-
 
 class LoginPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
@@ -61,7 +66,7 @@ class LoginPage(ctk.CTkFrame):
         self.login_button = ctk.CTkButton(
             self.login_frame,
             text="Login",
-            command=lambda: self.login_user(self)
+            command=lambda: self.login_user()
         )
         self.login_button.pack(padx=50, pady=10, expand=True)
 
@@ -77,12 +82,6 @@ class LoginPage(ctk.CTkFrame):
         )
         self.login_text_label.pack(padx=50, pady=10, expand=True)
 
-    def switch_to_main_page(controller):
-        controller.show_frame(MainPage)
-    
-    def switch_to_register_page(controller):
-        controller.show_frame(RegisterPage)
-
     def login_user(self):
         username = self.enter_login_username.get()
         password = self.enter_login_password.get()
@@ -93,7 +92,7 @@ class LoginPage(ctk.CTkFrame):
             result = self.cursor.fetchone()
             if result == password:
                 tk.messagebox.showinfo('Success', 'Login Successful!')
-                self.switch_to_main_page(self.controller)
+                self.controller.show_frame(MainPage)
             else:
                 tk.messagebox.showinfo('Error', 'Invalid Username or Password!')
         else:
@@ -143,14 +142,14 @@ class RegisterPage(ctk.CTkFrame):
         self.register_button = ctk.CTkButton(
             self.register_page_frame,
             text="Sign Up",
-            command=lambda: self.reg_new_user(self)
+            command=lambda: self.reg_new_user()
         )
         self.register_button.pack(padx=50, pady=10, expand=True)
 
         self.go_back_button = ctk.CTkButton(
             self.register_page_frame,
             text="Back",
-            command=lambda: self.switch_to_login_page(self)
+            command=lambda: self.controller.show_frame(LoginPage)
         )
         self.go_back_button.pack(padx=50, pady=10, expand=True)
 
@@ -158,12 +157,6 @@ class RegisterPage(ctk.CTkFrame):
             self.register_page_frame, text="Create a new account!", font=("Arial", 18)
         )
         self.register_text_label.pack(padx=50, pady=10, expand=True)
-
-    def switch_to_main_page(controller):
-        controller.show_frame(MainPage)
-
-    def switch_to_login_page(controller):
-        controller.show_frame(LoginPage)
 
     def reg_new_user(self):
         username = self.enter_register_username.get()
@@ -175,6 +168,6 @@ class RegisterPage(ctk.CTkFrame):
             else:
                 self.add_user(username, password)
                 tk.messagebox.showinfo("account created", "Account created successfully!")
-                self.switch_to_main_page()
+                self.controller.show_frame(MainPage)
         else:
             tk.messagebox.showerror("Error", "Please fill in all fields!")

@@ -2,6 +2,7 @@ import customtkinter as ctk
 from main_ui import MainPage, LoginPage, RegisterPage
 from user_database import UserDatabase
 
+
 class MainApplication(
     ctk.CTk
 ):  # main application class is the main application controller
@@ -35,3 +36,7 @@ class MainApplication(
 
     def run(self):  # function to run the application
         self.mainloop()
+
+    
+
+    
