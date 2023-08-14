@@ -1,5 +1,6 @@
 import customtkinter as ctk
-
+import sqlite3
+from user_database import UserDatabase
 
 class MainPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
@@ -86,7 +87,6 @@ class RegisterPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
-
         self.create_widgets()
 
     def create_widgets(self):
@@ -124,14 +124,14 @@ class RegisterPage(ctk.CTkFrame):
         self.register_button = ctk.CTkButton(
             self.register_page_frame,
             text="Sign Up",
-            command=lambda: self.controller.show_frame(MainPage),
+            command=lambda: self.reg_new_user(self)
         )
         self.register_button.pack(padx=50, pady=10, expand=True)
 
         self.go_back_button = ctk.CTkButton(
             self.register_page_frame,
             text="Back",
-            command=lambda: self.controller.show_frame(LoginPage),
+            command=lambda: self.switch_to_login_page(self)
         )
         self.go_back_button.pack(padx=50, pady=10, expand=True)
 
@@ -145,3 +145,17 @@ class RegisterPage(ctk.CTkFrame):
 
     def switch_to_login_page(controller):
         controller.show_frame(LoginPage)
+
+    def reg_new_user(self):
+        username = self.enter_register_username.get()
+        password = self.enter_register_password.get()
+        if username != "" and password!= "":
+            cursor.execute('SELECT username FROM users WHERE username =?', [username,])
+            if cursor.fetchone() is not None:
+                messagebox.showerror("Error", "Username already exists!")
+            else:
+                self.add_user(username, password)
+                messagebox.showinfo("account created", "Account created successfully!")
+                self.switch_to_main_page()
+        else:
+            messagebox.showerror("Error", "Please fill in all fields!")
