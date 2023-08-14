@@ -1,5 +1,6 @@
 import sqlite3
 import hashlib
+import bcrypt
 
 class UserDatabase:
     def __init__(self, db_name):
@@ -39,4 +40,8 @@ class UserDatabase:
         self.cursor.execute('''
             SELECT password_hash FROM users WHERE username =?
         ''', (username,))
-        return self.cursor.fetchone()
+        password_hash = self.cursor.fetchone()
+        if password_hash:
+            return password_hash[0]
+        else:
+            return None

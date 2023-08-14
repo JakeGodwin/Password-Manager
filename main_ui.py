@@ -2,6 +2,7 @@ import customtkinter as ctk
 import tkinter as tk
 import sqlite3
 from user_database import UserDatabase as user_db
+import bcrypt
 
 def switch_to_main_page(controller):
     controller.show_frame(MainPage)
@@ -83,21 +84,23 @@ class LoginPage(ctk.CTkFrame):
         self.login_text_label.pack(padx=50, pady=10, expand=True)
 
     def login_user(self):
-        username = self.enter_login_username.get()
-        password = self.enter_login_password.get()
+        login_username = self.enter_login_username.get()
+        login_password = self.enter_login_password.get()
         self.conn = sqlite3.connect("database.db")
         self.cursor = self.conn.cursor()
-        if username != "" and password!= "":
-           # self.cursor.execute('SELECT password_hash FROM users WHERE username =?', [username])
-           # result = self.cursor.fetchone()
-          #  if result == password:
-            if user_db.get_user_pass(self, username) == password:          
-                tk.messagebox.showinfo('Success', 'Login Successful!')
-                self.controller.show_frame(MainPage)
+        hashed_password = user_db.get_user_pass(self, login_username)
+        if login_username != "" and login_password!= "":
+            if hashed_password:
+                if self.check_password(login_password, hashed_password):          
+                    tk.messagebox.showinfo('Success', 'Login Successful!')
+                    self.controller.show_frame(MainPage)
             else:
                 tk.messagebox.showinfo('Error', 'Invalid Username or Password!')
         else:
             tk.messagebox.showerror('Error', 'Please enter all fields!')
+
+    def check_password(self, login_password, hashed_password):
+        return bcrypt.checkpw(login_password.encode("utf-8"), hashed_password)
 
 
 class RegisterPage(ctk.CTkFrame):
@@ -162,12 +165,13 @@ class RegisterPage(ctk.CTkFrame):
     def reg_new_user(self):
         username = self.enter_register_username.get()
         password = self.enter_register_password.get()
+        password_hashed =bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
         if username != "" and password!= "":
             self.cursor.execute('SELECT username FROM users WHERE username =?', [username])
             if self.cursor.fetchone() is not None:
                 tk.messagebox.showerror("Error", "Username already exists!")
             else:
-                user_db.add_user(self, username, password)
+                user_db.add_user(self, username, password_hashed)
                 tk.messagebox.showinfo("account created", "Account created successfully!")
                 self.controller.show_frame(MainPage)
         else:
