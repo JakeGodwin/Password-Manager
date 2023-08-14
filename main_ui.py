@@ -1,4 +1,5 @@
 import customtkinter as ctk
+import tkinter as tk
 import sqlite3
 from user_database import UserDatabase
 
@@ -60,7 +61,7 @@ class LoginPage(ctk.CTkFrame):
         self.login_button = ctk.CTkButton(
             self.login_frame,
             text="Login",
-            command=lambda: self.controller.show_frame(MainPage),
+            command=lambda: self.login_user(self)
         )
         self.login_button.pack(padx=50, pady=10, expand=True)
 
@@ -82,11 +83,29 @@ class LoginPage(ctk.CTkFrame):
     def switch_to_register_page(controller):
         controller.show_frame(RegisterPage)
 
+    def login_user(self):
+        username = self.enter_login_username.get()
+        password = self.enter_login_password.get()
+        self.conn = sqlite3.connect("database.db")
+        self.cursor = self.conn.cursor()
+        if username != "" and password!= "":
+            self.cursor.execute('SELECT password FROM users WHERE username =?', (username,))
+            result = self.cursor.fetchone()
+            if result == password:
+                tk.messagebox.showinfo('Success', 'Login Successful!')
+                self.switch_to_main_page(self.controller)
+            else:
+                tk.messagebox.showinfo('Error', 'Invalid Username or Password!')
+        else:
+            tk.messagebox.showerror('Error', 'Please enter all fields!')
+
 
 class RegisterPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
+        self.conn = sqlite3.connect("database.db")
+        self.cursor = self.conn.cursor()
         self.create_widgets()
 
     def create_widgets(self):
@@ -150,12 +169,12 @@ class RegisterPage(ctk.CTkFrame):
         username = self.enter_register_username.get()
         password = self.enter_register_password.get()
         if username != "" and password!= "":
-            cursor.execute('SELECT username FROM users WHERE username =?', [username,])
-            if cursor.fetchone() is not None:
-                messagebox.showerror("Error", "Username already exists!")
+            self.cursor.execute('SELECT username FROM users WHERE username =?', (username))
+            if self.cursor.fetchone() is not None:
+                tk.messagebox.showerror("Error", "Username already exists!")
             else:
                 self.add_user(username, password)
-                messagebox.showinfo("account created", "Account created successfully!")
+                tk.messagebox.showinfo("account created", "Account created successfully!")
                 self.switch_to_main_page()
         else:
-            messagebox.showerror("Error", "Please fill in all fields!")
+            tk.messagebox.showerror("Error", "Please fill in all fields!")
