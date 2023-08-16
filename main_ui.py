@@ -11,12 +11,14 @@ class MainPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
         login_ref = LoginPage(parent, controller)
+        self.accounts = []
         global login_id
         global logged_in_username
         logged_in_username = login_ref.get_logged_in_username()
         login_id = self.get_login_id(login_ref.get_logged_in_username())
         self.controller = controller
-        self.load_user_accounts()
+        if login_id is not None:
+            self.load_user_accounts(login_id)
         self.main_page_container = ctk.CTkFrame(self)
         self.main_page_container.pack(fill="both", expand=True)
         self.main_page_container.anchor(ctk.CENTER)
@@ -76,7 +78,7 @@ class MainPage(ctk.CTkFrame):
         self.password_entry = ctk.CTkEntry(self.right_side_frame)
         self.password_entry.grid(row=2, column=0, padx=20, pady=10)
 
-        self.add_new_button = ctk.CTkButton(self.right_side_frame, text="Add", command=lambda: self.add_new_account())
+        self.add_new_button = ctk.CTkButton(self.right_side_frame, text="Add", command=lambda: self.add_new_account(login_id, self.account_entry.get(), self.password_entry.get()))
         self.add_new_button.grid(row=3, column=0, padx=20, pady=20)
 
         self.sign_out_button = ctk.CTkButton(self.right_side_frame, text="Sign Out", command=lambda: self.controller.show_frame(LoginPage))
@@ -94,10 +96,9 @@ class MainPage(ctk.CTkFrame):
         else:
             return None
         
-    def add_new_account(self):
-        user_id = self.get_login_id(logged_in_username)
-        account_name = self.account_entry.get()
-        password = self.password_entry.get()
+    def add_new_account(self, user_id, account_name, password):
+        self.conn = sqlite3.connect("accounts.db")
+        self.cursor = self.conn.cursor()
         if account_name != "" and password!= "":
             self.cursor.execute('SELECT account_name FROM user_accounts WHERE user_id =?', [user_id])
             if self.cursor.fetchone() is not None:
@@ -111,10 +112,13 @@ class MainPage(ctk.CTkFrame):
             tk.messagebox.showerror("Error", "Please fill in all fields!")
 
     def load_user_accounts(self):
-            accounts = [account_db.get_user_accounts(self.get_login_id(LoginPage.get_logged_in_username(self)))]
-            for item in accounts:
-                if item is None:
-                    self.list_box.insert(account_db.get_user_accounts(self.get_login_id(LoginPage.get_logged_in_username(self))))
+        try:
+            self.list_box.delete(0, tk.END)
+            self.list_box.insert(tk.END, account_db.get_user_accounts(login_id))
+        except:
+            pass
+
+    
 
 
 
@@ -205,6 +209,7 @@ class LoginPage(ctk.CTkFrame):
     def get_logged_in_username(self):
             logged_in_user = self.enter_login_username.get()
             return logged_in_user
+
 
 
 
