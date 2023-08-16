@@ -14,7 +14,8 @@ class AccountsDatabase:
         # create user table with columns for user data     
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS user_accounts (
-                user_id INTEGER PRIMARY KEY,
+                account_id INTEGER PRIMARY KEY AUTOINCREMENT,            
+                user_id INTEGER,
                 account_name TEXT NOT NULL,
                 password_hash TEXT NOT NULL
             )                

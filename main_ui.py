@@ -78,7 +78,7 @@ class MainPage(ctk.CTkFrame):
         self.password_entry = ctk.CTkEntry(self.right_side_frame)
         self.password_entry.grid(row=2, column=0, padx=20, pady=10)
 
-        self.add_new_button = ctk.CTkButton(self.right_side_frame, text="Add", command=lambda: self.add_new_account(login_id, self.account_entry.get(), self.password_entry.get()))
+        self.add_new_button = ctk.CTkButton(self.right_side_frame, text="Add", command=lambda: self.add_new_account())
         self.add_new_button.grid(row=3, column=0, padx=20, pady=20)
 
         self.sign_out_button = ctk.CTkButton(self.right_side_frame, text="Sign Out", command=lambda: self.controller.show_frame(LoginPage))
@@ -96,20 +96,23 @@ class MainPage(ctk.CTkFrame):
         else:
             return None
         
-    def add_new_account(self, user_id, account_name, password):
+    def add_new_account(self):
+        user_id = self.get_login_id(logged_in_username)
+        account_name = self.account_entry.get()
+        password = self.password_entry.get()
         self.conn = sqlite3.connect("accounts.db")
         self.cursor = self.conn.cursor()
-        if account_name != "" and password!= "":
-            self.cursor.execute('SELECT account_name FROM user_accounts WHERE user_id =?', [user_id])
-            if self.cursor.fetchone() is not None:
-                tk.messagebox.showerror("Error", "account already exists!, consider editing current account")
-            else:
-                account_db.insert_account(self, user_id, account_name, password)
-                self.load_user_accounts()
-                tk.messagebox.showinfo("account created", "Account created successfully!")
+        # if account_name != "" and password!= "":
+        #     self.cursor.execute('SELECT account_name FROM user_accounts WHERE user_id =?', [user_id])
+        #     if self.cursor.fetchone() is not None:
+        #         tk.messagebox.showerror("Error", "account already exists!, consider editing current account")
+        #     else:
+        account_db.insert_account(self, user_id, account_name, password)
+        self.load_user_accounts()
+        tk.messagebox.showinfo("account created", "Account created successfully!")
                 
-        else:
-            tk.messagebox.showerror("Error", "Please fill in all fields!")
+        # else:
+        #     tk.messagebox.showerror("Error", "Please fill in all fields!")
 
     def load_user_accounts(self):
         try:
