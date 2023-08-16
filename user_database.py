@@ -9,6 +9,8 @@ class UserDatabase:
         # Create a table if it does not exist
         self.create_user_table()
 
+        
+
     def create_user_table(self):
         # create user table with columns for user data
         self.cursor.execute('''
@@ -44,3 +46,6 @@ class UserDatabase:
             return password_hash[0]
         else:
             return None
+        
+    
+    

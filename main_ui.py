@@ -5,9 +5,14 @@ from user_database import UserDatabase as user_db
 import bcrypt
 
 
+
+
 class MainPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
+        login_ref = LoginPage()
+        global login_id
+        login_id = self.get_login_id(login_ref.get_logged_in_username())
         self.controller = controller
         self.main_page_container = ctk.CTkFrame(self)
         self.main_page_container.pack(fill="both", expand=True)
@@ -74,6 +79,18 @@ class MainPage(ctk.CTkFrame):
         self.sign_out_button = ctk.CTkButton(self.right_side_frame, text="Sign Out")
         self.sign_out_button.grid(row=4, column=0, padx=20, pady=40)
 
+    def get_login_id(self, username):
+        self.conn = sqlite3.connect("database.db")
+        self.cursor = self.conn.cursor()
+        self.cursor.execute('''
+            SELECT id FROM users WHERE username =?
+        ''', (username,))
+        user_id = self.cursor.fetchone()
+        if user_id:
+            return user_id[0]
+        else:
+            return None
+
 
 
     
@@ -82,7 +99,6 @@ class LoginPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
-
         self.create_widgets()
 
     def create_widgets(self):
@@ -154,6 +170,11 @@ class LoginPage(ctk.CTkFrame):
 
     def check_password(self, login_password, hashed_password):
         return bcrypt.checkpw(login_password.encode("utf-8"), hashed_password)
+    
+    def get_logged_in_username(self):
+        return self.enter_login_username.get()
+    
+
 
 
 class RegisterPage(ctk.CTkFrame):
