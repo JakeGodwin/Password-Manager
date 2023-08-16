@@ -9,15 +9,15 @@ class AccountsDatabase:
         # Create a table if it does not exist
         self.create_user_table()
 
-    def create_user_table(self, user_id, account_name, password_hash):
-        # create user table with columns for user data
+    def create_user_table(self):
+        # create user table with columns for user data     
+        # create user table with columns for user data     
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS user_accounts (
-    account_id INTEGER PRIMARY KEY,
-    user_id INTEGER,
-    account_name TEXT NOT NULL,
-    password_hash TEXT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES user_logins (user_id)
+                user_id INTEGER PRIMARY KEY,
+                account_name TEXT NOT NULL,
+                password_hash TEXT NOT NULL
+            )                
         ''')
         self.conn.commit()
 
@@ -31,7 +31,7 @@ class AccountsDatabase:
     def get_user_accounts(self, user_id):
         # retrieve a user from the database
         self.cursor.execute('''
-            SELECT * FROM user_accounts WHERE user_id =?
+            SELECT account_name FROM user_accounts WHERE user_id =?
         ''', (user_id,))
         return self.cursor.fetchone()
     

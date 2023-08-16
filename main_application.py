@@ -12,7 +12,7 @@ class MainApplication(
         self.geometry("1000x600")
         self.title("Password Manager")
         self.user_database = UserDatabase("database.db")
-      #  self.accounts_database = AccountsDatabase("accounts.db")
+        self.accounts_database = AccountsDatabase("accounts.db")
         # container to hold different frames
         container = ctk.CTkFrame(self)
         container.pack(side="top", fill="both", expand=True)
