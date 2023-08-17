@@ -26,7 +26,10 @@ class MainApplication(
             RegisterPage,
             MainPage,
         ):  # loops through page classes and creates frame objects
-            frame = F(container, self)
+            if F == MainPage:
+                frame = F(container, self, None)
+            else:  
+                frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
 
@@ -35,6 +38,13 @@ class MainApplication(
     def show_frame(self, page_class):  # function to raise chosen frame to the top
         frame = self.frames[page_class]
         frame.tkraise()
+
+    def show_main_page(self, login_id):
+        self.frames[MainPage].load_user_accounts(login_id)
+        self.show_frame(MainPage)
+    
+    def set_login_id(self, login_id):
+        self.frames[MainPage].login_id = login_id
 
     def run(self):  # function to run the application
         self.mainloop()

@@ -1,4 +1,5 @@
 import sqlite3
+from user_database import UserDatabase as user_db
 
 
 class AccountsDatabase:
@@ -10,36 +11,46 @@ class AccountsDatabase:
         self.create_user_table()
 
     def create_user_table(self):
-        # create user table with columns for user data     
-        # create user table with columns for user data     
-        self.cursor.execute('''
+        # create user table with columns for user data
+        self.cursor.execute(''' 
             CREATE TABLE IF NOT EXISTS user_accounts (
-                account_id INTEGER PRIMARY KEY AUTOINCREMENT,            
-                user_id INTEGER,
+                account_id INTEGER PRIMARY KEY AUTOINCREMENT,                                  
                 account_name TEXT NOT NULL,
-                password_hash TEXT NOT NULL
+                password_hash TEXT NOT NULL,
+                user_id INTEGER,
+                FOREIGN KEY (user_id) REFERENCES database(id)             
             )                
-        ''')
-        self.conn.commit()
+       ''')
+        self.conn.commit()  # remove account_id set user_id to foreign key = Foreign Key REFERENCES Userdb
 
-    def insert_account(self, user_id, account_name, password_hash):
-        self.cursor.execute('''
-            INSERT INTO user_accounts (user_id, account_name, password_hash)
-            VALUES (?,?)
-        ''', (user_id, account_name, password_hash))
+    def insert_account(self, account_name, password_hash, user_id):
+        print("Received user_id in insert_account:", user_id)
+        self.cursor.execute(
+            """
+            INSERT INTO user_accounts (account_name, password_hash, user_id)
+            VALUES (?,?,?)
+        """,
+            (account_name, password_hash, user_id),
+        )
         self.conn.commit()
 
     def get_user_accounts(self, user_id):
         # retrieve a user from the database
-        self.cursor.execute('''
+        self.cursor.execute(
+            """
             SELECT account_name FROM user_accounts WHERE user_id =?
-        ''', (user_id,))
+        """,
+            (user_id,),
+        )
         return self.cursor.fetchone()
-    
+
     def get_user_passwords(self, user_id):
-        self.cursor.execute('''
+        self.cursor.execute(
+            """
             SELECT password_hash FROM user_accounts WHERE user_id =?
-        ''', (user_id,))
+        """,
+            (user_id,),
+        )
         password_hash = self.cursor.fetchone()
         if password_hash:
             return password_hash[0]
