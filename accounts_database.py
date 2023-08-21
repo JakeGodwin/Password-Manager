@@ -67,3 +67,13 @@ class AccountsDatabase:
             (user_id, account_name),
         )
         self.conn.commit()
+
+    def update_account(self, user_id, old_account_name, new_account_name, new_password):
+        self.cursor.execute(
+            """
+            UPDATE user_accounts SET account_name =?, password_hash =?
+            WHERE user_id =? AND account_name =?
+        """,
+            (new_account_name, new_password, user_id, old_account_name),
+        )
+        self.conn.commit()

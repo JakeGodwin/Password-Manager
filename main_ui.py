@@ -74,7 +74,7 @@ class MainPage(ctk.CTkFrame):
         )
         self.left_side_button_frame.grid(row=2, column=0)
 
-        self.edit_button = ctk.CTkButton(self.left_side_button_frame, text="edit")
+        self.edit_button = ctk.CTkButton(self.left_side_button_frame, text="edit", command=self.edit_selected_account)
         self.edit_button.grid(row=0, column=0, padx=20, pady=20)
 
         self.delete_button = ctk.CTkButton(self.left_side_button_frame, text="delete", command=self.delete_selected_account)
@@ -150,6 +150,36 @@ class MainPage(ctk.CTkFrame):
                 account_db.delete_account(self, self.login_id, selected_account)
                 self.load_user_accounts(self.login_id)
                 tk.messagebox.showinfo("account deleted", "Account deleted successfully!")
+
+    def edit_selected_account(self):
+        selected_account = self.list_box.get(tk.ACTIVE)
+        if selected_account:
+            edit_window = ctk.CTkToplevel(self)
+            edit_window.title("Edit Account")
+            edit_window.geometry("300x300")
+
+            acount_name_label = ctk.CTkLabel(edit_window, text="New Account Name:")
+            acount_name_label.pack(padx=10, pady=5)
+
+            new_account_name_entry = ctk.CTkEntry(edit_window)
+            new_account_name_entry.pack(padx=10, pady=5)
+
+            password_label = ctk.CTkLabel(edit_window, text="New Account Password:")
+            password_label.pack(padx=10, pady=5)
+
+            new_password_entry = ctk.CTkEntry(edit_window)
+            new_password_entry.pack(padx=10, pady=5)
+
+            save_button = ctk.CTkButton(edit_window, text="Save", command=lambda: self.save_edited_acount(selected_account, new_account_name_entry.get(), new_password_entry.get(), edit_window,))
+            save_button.pack(padx=10, pady=5)
+
+    def save_edited_acount(self, old_account_name, new_account_name, new_password, edit_window):
+        if new_account_name and new_password:
+            account_db.update_account(self, self.login_id, old_account_name, new_account_name, new_password)
+            self.load_user_accounts(self.login_id)
+            edit_window.destroy()
+        else:
+            tk.messagebox.showerror("Error", "Please fill in all fields!")
 
 
 class LoginPage(ctk.CTkFrame):
