@@ -9,7 +9,8 @@ import bcrypt
 class MainPage(ctk.CTkFrame):
     def __init__(self, parent, controller, login_id):
         ctk.CTkFrame.__init__(self, parent)
-        self.accounts = []
+        self.conn = sqlite3.connect("accounts.db")
+        self.cursor = self.conn.cursor()
         # global logged_in_username
         # logged_in_username = login_ref.get_logged_in_username()
         self.login_id = login_id
@@ -119,11 +120,10 @@ class MainPage(ctk.CTkFrame):
         #     tk.messagebox.showerror("Error", "Please fill in all fields!")
 
     def load_user_accounts(self, login_id):
-        try:
-            self.list_box.delete(0, tk.END)
-            self.list_box.insert(tk.END, account_db.get_user_accounts(login_id))
-        except:
-            pass
+        self.list_box.delete(0, tk.END)
+        accounts = account_db.get_user_accounts(self, login_id)
+        for account in accounts:
+            self.list_box.insert(tk.END, account)
 
     # if account_name != "" and password!= "":
     #     self.cursor.execute('SELECT account_name FROM user_accounts WHERE user_id =?', [user_id])

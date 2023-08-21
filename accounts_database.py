@@ -42,7 +42,9 @@ class AccountsDatabase:
         """,
             (user_id,),
         )
-        return self.cursor.fetchone()
+        accounts = self.cursor.fetchall()
+        account_names = [account[0] for account in accounts]
+        return account_names
 
     def get_user_passwords(self, user_id):
         self.cursor.execute(
