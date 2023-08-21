@@ -46,15 +46,15 @@ class AccountsDatabase:
         account_names = [account[0] for account in accounts]
         return account_names
 
-    def get_user_passwords(self, user_id):
+    def get_user_passwords(self, user_id, account_name):
         self.cursor.execute(
             """
-            SELECT password_hash FROM user_accounts WHERE user_id =?
+            SELECT password_hash FROM user_accounts WHERE user_id =? AND account_name =?
         """,
-            (user_id,),
+            (user_id, account_name),
         )
         password_hash = self.cursor.fetchone()
         if password_hash:
             return password_hash[0]
         else:
-            return None
+            return "Password not found"

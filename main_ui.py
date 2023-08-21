@@ -54,6 +54,7 @@ class MainPage(ctk.CTkFrame):
             self.list_box_frame, width=30, height=20, bg="#32393d", borderwidth=0
         )
         self.list_box.grid(row=0, column=0, padx=20, pady=20)
+        self.list_box.bind("<<ListboxSelect>>", self.on_account_selected)
 
         self.output_frame = ctk.CTkFrame(
             self.listbox_output_container, fg_color="#2d2d2d"
@@ -131,6 +132,13 @@ class MainPage(ctk.CTkFrame):
     #         tk.messagebox.showerror("Error", "account already exists!, consider editing current account")
     #     else:
 
+    def on_account_selected(self, event):
+        selected_index = self.list_box.curselection()
+        if selected_index:
+            selected_account = self.list_box.get(selected_index)
+            selected_password = account_db.get_user_passwords(self, self.login_id, selected_account)
+            self.output_box.delete(1.0, tk.END)
+            self.output_box.insert(tk.END, selected_password)
 
 class LoginPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
