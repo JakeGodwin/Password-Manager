@@ -58,3 +58,12 @@ class AccountsDatabase:
             return password_hash[0]
         else:
             return "Password not found"
+
+    def delete_account(self, user_id, account_name):
+        self.cursor.execute(
+            """
+            DELETE FROM user_accounts WHERE user_id =? AND account_name =?
+        """,
+            (user_id, account_name),
+        )
+        self.conn.commit()

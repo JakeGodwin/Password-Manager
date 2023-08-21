@@ -77,7 +77,7 @@ class MainPage(ctk.CTkFrame):
         self.edit_button = ctk.CTkButton(self.left_side_button_frame, text="edit")
         self.edit_button.grid(row=0, column=0, padx=20, pady=20)
 
-        self.delete_button = ctk.CTkButton(self.left_side_button_frame, text="delete")
+        self.delete_button = ctk.CTkButton(self.left_side_button_frame, text="delete", command=self.delete_selected_account)
         self.delete_button.grid(row=0, column=1, padx=20, pady=20)
 
         self.right_side_frame = ctk.CTkFrame(self.main_page_container)
@@ -139,6 +139,18 @@ class MainPage(ctk.CTkFrame):
             selected_password = account_db.get_user_passwords(self, self.login_id, selected_account)
             self.output_box.delete(1.0, tk.END)
             self.output_box.insert(tk.END, selected_password)
+
+    def delete_selected_account(self):
+        selected_account = self.list_box.get(tk.ACTIVE)
+        if selected_account:
+            confirmed = tk.messagebox.askyesno(
+                "Confirm Deletion", f"Are you sure you want to delete account {selected_account}?",
+            )
+            if confirmed:
+                account_db.delete_account(self, self.login_id, selected_account)
+                self.load_user_accounts(self.login_id)
+                tk.messagebox.showinfo("account deleted", "Account deleted successfully!")
+
 
 class LoginPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
